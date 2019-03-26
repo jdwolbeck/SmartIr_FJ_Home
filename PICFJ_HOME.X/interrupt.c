@@ -14,8 +14,7 @@
 #endif
 
 #include "uart.h"
-#include "main.h"
-#include "esp8266.h"
+#include "keypad.h"
 
 /******************************************************************************/
 /* Interrupt Routines                                                         */
@@ -30,4 +29,19 @@ void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
     char RXread = U2RXREG;
     uart(RXread);
     IFS1bits.U2RXIF = 0;
+}
+
+void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
+{
+    if(IOCFBbits.IOCFB13) // K1 (Top) was pressed
+        btnPressed(1);
+    else if(IOCFBbits.IOCFB12) // K2 (Top-MID) was pressed
+        btnPressed(2);
+    else if(IOCFBbits.IOCFB11) // K3 (Bot-MID) was pressed
+        btnPressed(3);
+    else if(IOCFBbits.IOCFB10) // K4 (Bot) was pressed
+        btnPressed(4);
+    
+    IOCFB = 0; // Clear individual flags
+    IFS1bits.IOCIF = 0; // Interrupt flag
 }

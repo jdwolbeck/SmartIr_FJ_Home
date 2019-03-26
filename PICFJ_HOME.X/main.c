@@ -16,23 +16,29 @@
 #endif
 
 #include <stdio.h>
-#include "user.h"
+#include <stdbool.h>
 #include "main.h"
+#include "lcd.h"
 #include "system.h"
-#include "esp8266.h"
+#include "keypad.h"
+#include "initialization.h"
 #include "configuration_bits.h"
 
 int delay_value = 1000; //ms
+int currentMenu = 0;
+int autoEn = false;
+int showDataEn = 0;
 
 int main() 
 {
     InitApp();
 
-    TRISAbits.TRISA2 = 0;
-    ANSAbits.ANSA2 = 0;
     while(1)
     {
-        
+        delay(250);
+        LATBbits.LATB5 = !LATBbits.LATB5;
+        if(showDataEn)
+            LCD_dataShow();
     }
     return 0;
 }

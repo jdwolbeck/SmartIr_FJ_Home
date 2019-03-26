@@ -11,6 +11,6 @@
     #endif
 #endif
 
-void InitUART(void);
+//void InitUART(void);
 void uart(char);
 void uart_print(char[]);
