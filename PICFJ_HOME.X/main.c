@@ -21,6 +21,7 @@
 #include "lcd.h"
 #include "system.h"
 #include "keypad.h"
+#include "bluetooth.h"
 #include "initialization.h"
 #include "configuration_bits.h"
 
@@ -32,6 +33,13 @@ int showDataEn = 0;
 int main() 
 {
     InitApp();
+    
+    int index = 0;
+    char temp[5];
+    temp[0] = '\0';
+    
+    bleData.packetEOT = false;
+    bleData.packetIndex = 0;
 
     while(1)
     {
@@ -39,6 +47,15 @@ int main()
         HB_LED = !HB_LED;
         if(showDataEn)
             LCD_dataShow();
+        if(bleData.packetEOT)
+        {
+            temp[0] = index + '0';
+            temp[1] = '\0';
+            LCD_clear();
+            LCD_display(temp);
+            bleData.packetEOT = false;
+            index++;
+        }
     }
     return 0;
 }

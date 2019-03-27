@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c interrupt.c lcd.c system.c uart.c initialization.c keypad.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c interrupt.c lcd.c system.c uart.c initialization.c keypad.c bluetooth.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/interrupt.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/system.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/initialization.o ${OBJECTDIR}/keypad.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/interrupt.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/system.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/initialization.o.d ${OBJECTDIR}/keypad.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/interrupt.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/system.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/initialization.o ${OBJECTDIR}/keypad.o ${OBJECTDIR}/bluetooth.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/interrupt.o.d ${OBJECTDIR}/lcd.o.d ${OBJECTDIR}/system.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/initialization.o.d ${OBJECTDIR}/keypad.o.d ${OBJECTDIR}/bluetooth.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/interrupt.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/system.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/initialization.o ${OBJECTDIR}/keypad.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/interrupt.o ${OBJECTDIR}/lcd.o ${OBJECTDIR}/system.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/initialization.o ${OBJECTDIR}/keypad.o ${OBJECTDIR}/bluetooth.o
 
 # Source Files
-SOURCEFILES=main.c interrupt.c lcd.c system.c uart.c initialization.c keypad.c
+SOURCEFILES=main.c interrupt.c lcd.c system.c uart.c initialization.c keypad.c bluetooth.c
 
 
 CFLAGS=
@@ -143,6 +143,13 @@ ${OBJECTDIR}/keypad.o: keypad.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE)  keypad.c  -o ${OBJECTDIR}/keypad.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/keypad.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/keypad.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/bluetooth.o: bluetooth.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/bluetooth.o.d 
+	@${RM} ${OBJECTDIR}/bluetooth.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  bluetooth.c  -o ${OBJECTDIR}/bluetooth.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/bluetooth.o.d"      -g -D__DEBUG   -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/bluetooth.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/main.o: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -192,6 +199,13 @@ ${OBJECTDIR}/keypad.o: keypad.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/keypad.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  keypad.c  -o ${OBJECTDIR}/keypad.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/keypad.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
 	@${FIXDEPS} "${OBJECTDIR}/keypad.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/bluetooth.o: bluetooth.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/bluetooth.o.d 
+	@${RM} ${OBJECTDIR}/bluetooth.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  bluetooth.c  -o ${OBJECTDIR}/bluetooth.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/bluetooth.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/bluetooth.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

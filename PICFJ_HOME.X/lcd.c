@@ -3,6 +3,7 @@
 #include "lcd.h"
 #include "main.h"
 #include "system.h"
+#include "bluetooth.h"
 
 //////////////////////////////////////////////////////////////
 /*                 Basic Operations                         */
@@ -198,7 +199,7 @@ void LCD_moreMenu(void)
 {
     currentMenu = MORE_MENU;
     LCD_clear();
-    LCD_display("More menu...");
+    LCD_display("1.Setup   2.N/A");
     LCD_secondLine();
     LCD_display("3.Info    4.Back");
 }
@@ -212,6 +213,14 @@ void LCD_wifiConnectMenu(void)
     LCD_display("3.Net3    4.Back");
 }
 
+void LCD_setupMenu(void)
+{
+    currentMenu = SETUP_MENU;
+    LCD_clear();
+    LCD_display("1.View  2.Connect");
+    LCD_secondLine();
+    LCD_display("3.N/A    4.Back");
+}
 //////////////////////////////////////////////////////////////
 /*                  Extra Functions                         */
 //////////////////////////////////////////////////////////////
@@ -348,4 +357,31 @@ void LCD_infoMenu(void)
     LCD_display("3=>Bot-Md 4=>Bot");
     delay(2500);
     LCD_moreMenu();
+}
+
+void LCD_bleShow(void)
+{
+    LCD_clear();
+    LCD_display("N/A");
+    LCD_secondLine();
+    LCD_display("801F12B58D2F");
+    delay(1500);
+    LCD_setupMenu();
+}
+
+void LCD_bleConnect(void)
+{
+    LCD_clear();
+    LCD_display("Connecting in");
+    LCD_secondLine();
+    LCD_display("3");
+    delay(1000);
+    LCD_secondLine();
+    LCD_display("2");
+    delay(1000);
+    LCD_secondLine();
+    LCD_display("1");
+    delay(1000);
+    LCD_setupMenu();
+    BLE_connect();
 }

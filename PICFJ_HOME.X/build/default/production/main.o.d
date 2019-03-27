@@ -4,5 +4,6 @@ main.h  \
 lcd.h  \
 system.h  \
 keypad.h  \
- initialization.h  \
+ bluetooth.h  \
+initialization.h  \
 configuration_bits.h 

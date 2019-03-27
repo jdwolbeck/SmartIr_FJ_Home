@@ -48,8 +48,8 @@ void btnPressed(int btn)
                 LCD_mainMenu();
             break;
         case MORE_MENU:
-//            if(btn == 1) // K1 (Top) was pressed
-//                LCD_waterOn();
+            if(btn == 1) // K1 (Top) was pressed
+                LCD_setupMenu();
 //            else if(btn == 2) // K2 (Top-MID) was pressed
 //                LCD_waterOff();
             if(btn == 3) // K3 (Bot-MID) was pressed
@@ -64,9 +64,18 @@ void btnPressed(int btn)
                 LCD_wifiSelect(2);
             else if(btn == 3) // K3 (Bot-MID) was pressed
                 LCD_wifiSelect(3);
-            if(btn == 4) // K4 (Bot) was pressed
+            else if(btn == 4) // K4 (Bot) was pressed
                 LCD_wifiMenu();
             break;
+        case SETUP_MENU:
+            if(btn == 1) // K1 (Top) was pressed
+                LCD_bleShow();
+            if(btn == 2) // K2 (Top-MID) was pressed
+                LCD_bleConnect();
+//            if(btn == 3) // K3 (Bot-MID) was pressed
+//                LCD_wifiSelect(3);
+            if(btn == 4) // K4 (Bot) was pressed
+                LCD_moreMenu();
             break;
         default:
             break;

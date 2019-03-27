@@ -16,6 +16,7 @@
 #include "uart.h"
 #include "lcd.h"
 #include "keypad.h"
+#include "bluetooth.h"
 
 /******************************************************************************/
 /* Interrupt Routines                                                         */
@@ -30,7 +31,22 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
 {
     char RXchar = U2RXREG;
-    uart2(RXchar);
+    char temp;
+    
+    if(RXchar == '\r')
+    {
+        bleData.packetSize = bleData.packetIndex;
+        bleData.packetEOT = true;
+        bleData.packetIndex = 0;
+    }
+    else
+    {
+        bleData.packetBuf[bleData.packetIndex] = RXchar;
+        bleData.packetIndex++;
+        if(bleData.packetIndex == 0)
+            temp = RXchar;
+    }
+    
     IFS1bits.U2RXIF = 0;
 }
 
