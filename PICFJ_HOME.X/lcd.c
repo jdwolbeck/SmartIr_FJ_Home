@@ -130,7 +130,7 @@ void LCD_display(char str[])
 void LCD_write(bool rs, bool d7, bool d6, bool d5, bool d4)
 {
     RS = rs;
-    RW = 0;
+    //RW = 0; //Unused
     D7 = d7;
     D6 = d6;
     D5 = d5;
@@ -143,7 +143,7 @@ void LCD_write(bool rs, bool d7, bool d6, bool d5, bool d4)
 void LCD_read(bool rs, bool d7, bool d6, bool d5, bool d4)
 {
     RS = rs;
-    RW = 1;
+    //RW = 1; //Unimplemented
     D7 = d7;
     D6 = d6;
     D5 = d5;

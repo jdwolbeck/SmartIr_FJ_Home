@@ -14,6 +14,7 @@
 #endif
 
 #include "uart.h"
+#include "lcd.h"
 #include "keypad.h"
 
 /******************************************************************************/
@@ -21,13 +22,15 @@
 /******************************************************************************/
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 {
+    LCD_clear();
+    LCD_display("Entered UART");
     IFS0bits.U1RXIF = 0;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
 {
-    char RXread = U2RXREG;
-    uart(RXread);
+    char RXchar = U2RXREG;
+    uart2(RXchar);
     IFS1bits.U2RXIF = 0;
 }
 

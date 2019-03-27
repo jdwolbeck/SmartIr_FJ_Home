@@ -36,7 +36,7 @@ int main()
     while(1)
     {
         delay(250);
-        LATBbits.LATB5 = !LATBbits.LATB5;
+        HB_LED = !HB_LED;
         if(showDataEn)
             LCD_dataShow();
     }

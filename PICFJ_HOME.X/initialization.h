@@ -1,7 +1,12 @@
 #include <xc.h>
 
+#define FCY 4000000
+#define BAUD_RATE 9600
+
+#define HB_LED_DIR TRISAbits.TRISA4
+
 #define RS_DIR TRISBbits.TRISB15
-#define RW_DIR TRISBbits.TRISB5
+//#define RW_DIR TRISBbits.TRISB5 //UNUSED
 #define EN_DIR TRISBbits.TRISB14
 #define D7_DIR TRISBbits.TRISB6
 #define D6_DIR TRISBbits.TRISB7
