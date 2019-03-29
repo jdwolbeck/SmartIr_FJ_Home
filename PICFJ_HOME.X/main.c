@@ -19,6 +19,7 @@
 #include <stdbool.h>
 #include "main.h"
 #include "lcd.h"
+#include "uart.h"
 #include "system.h"
 #include "keypad.h"
 #include "bluetooth.h"
@@ -34,28 +35,18 @@ int main()
 {
     InitApp();
     
-    int index = 0;
-    char temp[5];
-    temp[0] = '\0';
-    
     bleData.packetEOT = false;
     bleData.packetIndex = 0;
+    bleData.packetBuf[0] = '\0';
 
     while(1)
     {
-        delay(250);
+        delay(1000);
         HB_LED = !HB_LED;
-        if(showDataEn)
+        if(showDataEn == 1)
             LCD_dataShow();
-        if(bleData.packetEOT)
-        {
-            temp[0] = index + '0';
-            temp[1] = '\0';
-            LCD_clear();
-            LCD_display(temp);
-            bleData.packetEOT = false;
-            index++;
-        }
+        uart_print(bleData.packetBuf);
+        uart_print("\r\n");
     }
     return 0;
 }

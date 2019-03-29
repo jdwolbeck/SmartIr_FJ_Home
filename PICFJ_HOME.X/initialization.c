@@ -24,14 +24,21 @@ void InitGPIO()
 
 void InitUART()
 {
+    //Bluetooth reset pin
+    TRISAbits.TRISA0 = 0;
+    ANSAbits.ANSA0 = 0;
+    LATAbits.LATA0 = 0;
+    delay(10);
+    LATAbits.LATA0 = 1;
+    
     //UART 1
     U1MODE = 0x0000;//(0x8008 & ~(1<<15));
     U1STA = 0x0000;
     
-    TRISBbits.TRISB2 = 0;   //Set RB2 (TX) as output
-    TRISBbits.TRISB3 = 1;   //Set RB3 (RX) as input
-    RPINR18bits.U1RXR = 3;  //Set RB3 (3) as U1RX
-    RPOR1bits.RP2R = 3;     //Set RB2 as U1TX (3)   
+    TRISBbits.TRISB3 = 0;   //Set RB3 (TX) as output
+    TRISBbits.TRISB2 = 1;   //Set RB2 (RX) as input
+    RPINR18bits.U1RXR = 2;  //Set RB2 as U1RX
+    RPOR1bits.RP3R = 3;     //Set RB3 as U1TX (3)   
     
     IFS0bits.U1RXIF = 0; //Clear RX interrupt Flag
     IPC2bits.U1RXIP = 3; //Priority of RX set to 3
@@ -47,6 +54,8 @@ void InitUART()
     U2MODE = 0x0000;
     U2STA = 0x0000;
     
+    TRISBbits.TRISB4 = 0;   //Set RB4 (TX) as output
+    TRISBbits.TRISB5 = 1;   //Set RB5 (RX) as input
     RPINR19bits.U2RXR = 5; //Set RB5 as U2RX
     RPOR2bits.RP4R = 5; //Set RB4 (4) as U2TX (5))
     
@@ -76,6 +85,7 @@ void InitLCD()
     //Set LCD and clear it
     LCD_begin();
     LCD_clear();
+    LCD_blink(1);
     LCD_mainMenu();
 }
 

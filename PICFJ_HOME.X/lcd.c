@@ -273,15 +273,18 @@ void LCD_dataShow(void)
     LCD_clear();
     LCD_display("Temp Lux Moistur");
     LCD_secondLine();
-    while(showDataEn)
+    while(showDataEn == 1)
     {
         LCD_display("                ");
         LCD_secondLine();
         LCD_display("100.0F 1023 100%");
         delay(250);
         LCD_secondLine();
-    } 
-    LCD_dataMenu();
+    }
+    if(!showDataEn)
+        LCD_dataMenu();
+    else
+        LCD_mainMenu();
 }
 
 void LCD_wifiShow(void)
@@ -382,6 +385,6 @@ void LCD_bleConnect(void)
     LCD_secondLine();
     LCD_display("1");
     delay(1000);
-    LCD_setupMenu();
-    BLE_connect();
+    LCD_clear();
+    BLE_connect(1);
 }

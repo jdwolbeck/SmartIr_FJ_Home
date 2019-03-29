@@ -1,20 +1,14 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-#if defined (__XC16__)
-    #include <xc.h>
-#elif defined (__C30__)
-    #if defined(__PIC24E__)
-        #include <p24Fxxxx.h>
-    #elif defined (__PIC24F__) || defined (__PIC24FK__)
-        #include <p24Fxxxx.h>
-    #elif defined(__PIC24H__)
-        #include <p24Hxxxx.h>
-    #endif
-#endif
 
+#include <xc.h>
+#include <stdio.h>
 #include "uart.h"
 #include "lcd.h"
+#include "main.h"
+#include <string.h>
+#include "system.h"
 #include "keypad.h"
 #include "bluetooth.h"
 
@@ -23,30 +17,33 @@
 /******************************************************************************/
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 {
-    LCD_clear();
-    LCD_display("Entered UART");
+    char RXchar = U1RXREG;
+    U1TXREG = RXchar;
     IFS0bits.U1RXIF = 0;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
 {
     char RXchar = U2RXREG;
-    char temp;
     
-    if(RXchar == '\r')
+    bleData.packetBuf[bleData.packetIndex++] = RXchar;
+    
+    if(!strcmp(bleData.packetBuf, "CMD>"))
     {
-        bleData.packetSize = bleData.packetIndex;
-        bleData.packetEOT = true;
+        uart_print(bleData.packetBuf);
+        bleData.packetBuf[0] = '\0';
         bleData.packetIndex = 0;
+        delay(1000);
+        BLE_connect(2);
     }
-    else
-    {
-        bleData.packetBuf[bleData.packetIndex] = RXchar;
-        bleData.packetIndex++;
-        if(bleData.packetIndex == 0)
-            temp = RXchar;
-    }
-    
+//    else if(RXchar == '%' && bleData.packetIndex != 0)
+//    {
+//        bleData.packetSize = bleData.packetIndex;
+//        uart_print(bleData.packetBuf);
+//        bleData.packetIndex = 0;
+//        bleData.packetBuf[0] = '\0';
+//    }
+
     IFS1bits.U2RXIF = 0;
 }
 

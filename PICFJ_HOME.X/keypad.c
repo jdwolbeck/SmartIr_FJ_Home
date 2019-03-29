@@ -2,6 +2,7 @@
 #include "keypad.h"
 #include "lcd.h"
 #include "main.h"
+#include "system.h"
 
 void btnPressed(int btn)
 {
@@ -35,7 +36,7 @@ void btnPressed(int btn)
 //            else if(btn == 3) // K3 (Bot-MID) was pressed
 //                LCD_waterAuto();
             else if(btn == 4) // K4 (Bot) was pressed
-                LCD_mainMenu();
+                showDataEn = 2;
             break;
         case WIFI_MENU:
             if(btn == 1) // K1 (Top) was pressed
