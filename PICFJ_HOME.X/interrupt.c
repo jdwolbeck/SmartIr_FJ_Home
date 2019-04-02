@@ -28,21 +28,10 @@ void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
     
     bleData.packetBuf[bleData.packetIndex++] = RXchar;
     
-    if(!strcmp(bleData.packetBuf, "CMD>"))
+    if(RXchar == '>')
     {
-        uart_print(bleData.packetBuf);
-        bleData.packetBuf[0] = '\0';
-        bleData.packetIndex = 0;
-        delay(1000);
         BLE_connect(2);
     }
-//    else if(RXchar == '%' && bleData.packetIndex != 0)
-//    {
-//        bleData.packetSize = bleData.packetIndex;
-//        uart_print(bleData.packetBuf);
-//        bleData.packetIndex = 0;
-//        bleData.packetBuf[0] = '\0';
-//    }
 
     IFS1bits.U2RXIF = 0;
 }

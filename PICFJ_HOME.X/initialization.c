@@ -25,13 +25,13 @@ void InitGPIO()
 void InitUART()
 {
     //Bluetooth reset pin
-    TRISAbits.TRISA0 = 0;
-    ANSAbits.ANSA0 = 0;
-    LATAbits.LATA0 = 0;
-    delay(10);
-    LATAbits.LATA0 = 1;
+//    TRISAbits.TRISA0 = 0;
+//    ANSAbits.ANSA0 = 0;
+//    LATAbits.LATA0 = 0;
+//    delay(10);
+//    LATAbits.LATA0 = 1;
     
-    //UART 1
+    //UART 1 (Regular/ESP)
     U1MODE = 0x0000;//(0x8008 & ~(1<<15));
     U1STA = 0x0000;
     
@@ -50,7 +50,7 @@ void InitUART()
     U1MODEbits.UARTEN = 1;  //UART1 enable
     U1STAbits.UTXEN = 1;    //UART1 TX Enable
     
-    //UART 2
+    //UART 2 (Bluetooth))
     U2MODE = 0x0000;
     U2STA = 0x0000;
     

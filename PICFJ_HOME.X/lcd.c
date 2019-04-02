@@ -217,7 +217,7 @@ void LCD_setupMenu(void)
 {
     currentMenu = SETUP_MENU;
     LCD_clear();
-    LCD_display("1.View  2.Connect");
+    LCD_display("1.View 2.Connect");
     LCD_secondLine();
     LCD_display("3.N/A    4.Back");
 }
@@ -385,6 +385,6 @@ void LCD_bleConnect(void)
     LCD_secondLine();
     LCD_display("1");
     delay(1000);
-    LCD_clear();
+    LCD_setupMenu();
     BLE_connect(1);
 }
