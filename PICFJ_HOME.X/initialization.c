@@ -1,7 +1,9 @@
 #include <xc.h>
+#include <stdlib.h>
 #include "initialization.h"
 #include "lcd.h"
 #include "system.h"
+#include "bluetooth.h"
 
 void InitApp()
 {
@@ -51,6 +53,12 @@ void InitUART()
     U1STAbits.UTXEN = 1;    //UART1 TX Enable
     
     //UART 2 (Bluetooth))
+    bleData.packetEOT = false;
+    bleData.isConnected = false;
+    bleData.count = 0;
+    bleData.packetIndex = 0;
+    bleData.packetBuf[0] = '\0';
+    
     U2MODE = 0x0000;
     U2STA = 0x0000;
     

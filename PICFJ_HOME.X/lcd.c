@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "lcd.h"
 #include "main.h"
+#include "uart.h"
 #include "system.h"
 #include "bluetooth.h"
 
@@ -376,12 +377,6 @@ void LCD_bleConnect(void)
 {
     LCD_clear();
     LCD_display("Connecting in");
-    LCD_secondLine();
-    LCD_display("3");
-    delay(1000);
-    LCD_secondLine();
-    LCD_display("2");
-    delay(1000);
     LCD_secondLine();
     LCD_display("1");
     delay(1000);

@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "main.h"
 #include "lcd.h"
 #include "uart.h"
@@ -36,26 +37,26 @@ int main()
 {
     InitApp();
     
-    bleData.packetEOT = false;
-    bleData.count = 0;
-    bleData.packetIndex = 0;
-    bleData.packetBuf[0] = '\0';
-
     while(1)
     {
         delay(1000);
         HB_LED = !HB_LED;
         if(showDataEn == 1)
             LCD_dataShow();
-        char* result = malloc(50);
-        result = BLE_parseT1(bleData.packetBuf);
-        uart_print(result);
-//        char temp[2];
-//        temp[0] = sprintf("%c", bleData.count);
-//        temp[1] = '\0';
-//        uart_print(temp);
+        
 //        uart_print(bleData.packetBuf);
+        int k = 0;
+        while(bleData.foundBT[k][0] != '\0')
+        {
+            uart_print(bleData.foundBT[k]);
+            k++;
+        }
+        uart_print("\r\n");
         uart_print("\r\n");
     }
+    int j;
+    for(j = 0; j < MAX; j++)
+        free(bleData.foundBT[j]);
+    
     return 0;
 }

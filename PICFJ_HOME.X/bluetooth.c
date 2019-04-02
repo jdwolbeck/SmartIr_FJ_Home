@@ -22,68 +22,48 @@ void BLE_connect(int count)
         uart2_print("F\r"); //Search mode
     }
     else if(count == 3)
+    {
+        bleData.isConnected = true;
         uart2_print("C,0,801F12B58D2F\r"); //Connect to module
+        bleData.packetBuf[0] = '\0';
+    }
 }
 
-char* BLE_parse(char str[])
+void BLE_parseT1(char str[])
 {
-    int i = 0;
-    int k;
-    int j = 0;
-    int good;
-    char* pstr[10];
-    char temp[50];
+    int i = 0, j = 0, k;
+    char temp[100];
+
+    while(str[i] != '\0' && str[i] != '%') // go through the string until first thing
+        i++;
     
-    //allocating memory for array of character pointers
-    for(i = 0; i < 10; i++)
-        pstr[i]=malloc(50);
-    i = 0;
-    
-    while(str[i] != '\0') // Go until end of buffer
+    while(str[i] != '\0')
     {
-        temp[0] = '\0';
-        good = 1;
         k = 0;
-        if(j > 1) //j = 0,1
+        while(str[i] == '%')
             i++;
         
-        while(str[i] != '%')
+        while(str[i] != '\0' && str[i] != '%')//str[i] != ',')
         {
-            if(str[i] == ',')
-            {
-                good = 0;
-                temp[k] = '\0';
-            }
-            if(good)
-            {
-                temp[k++] = str[i];
-            }
+            temp[k] = str[i];
+            k++;
             i++;
         }
-
-        pstr[j] = temp;
-        if(strcmp(temp,"801F12B58D2F"))
+//        while(str[i] != '%' && str[i] != '\0')
+//            i++;
+        
+        temp[k] = '\0';
+        if(k != 0)
         {
-            bleData.packetIndex = 0;
-            bleData.packetBuf[0] = '\0';
-            BLE_connect(3);
+            strcpy(bleData.foundBT[j],temp);
+            j++;
         }
-        j++;
     }
     
-    return pstr[0];
-}
-
-char* BLE_parseT1(char str[])
-{
-    int i = 0;
-    char temp[50];
-    char* pstr;
-    
-    while(str[i] != '%')
+    while(bleData.foundBT[k][0] != '\0')
     {
-        temp[i] = str[i];
+        if(!strcmp(bleData.foundBT[k],"801F12B58D2F"))
+            BLE_connect(3);
+        k++;
     }
-    pstr = "hey";
-    return &pstr;
 }
