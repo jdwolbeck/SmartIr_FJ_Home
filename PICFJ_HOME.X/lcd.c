@@ -1,4 +1,5 @@
 #include <xc.h>
+#include <string.h>
 #include <stdbool.h>
 #include "lcd.h"
 #include "main.h"
@@ -365,11 +366,48 @@ void LCD_infoMenu(void)
 
 void LCD_bleShow(void)
 {
+    char temp[STR_LEN];
+    int j = 0, ind = 1;
+    char index[3];
+    index[0] = ind + '0';
+    index[1] = '.';
+    index[2] = '\0';
+    
+    while(bleData.foundBT[j][0] != '\0')
+    {
+        if(!j)
+        {
+            LCD_clear();
+            strcpy(temp,bleData.foundBT[j]);
+            temp[16] = '\0';
+            LCD_secondLine();
+            LCD_display(index);
+            LCD_display(temp);
+            delay(750);
+            j++;
+            ind++; //Used for indexing the BT module
+        }
+        else
+        {
+            LCD_clear();
+            strcpy(temp,bleData.foundBT[j-1]);
+            temp[16] = '\0';
+            LCD_display(temp);
+            LCD_secondLine();
+            
+            strcpy(temp,bleData.foundBT[j]);
+            temp[16] = '\0';
+            LCD_display(temp);
+            delay(750);
+            j++;
+        }
+    }
     LCD_clear();
-    LCD_display("N/A");
-    LCD_secondLine();
-    LCD_display("801F12B58D2F");
-    delay(1500);
+    strcpy(temp,bleData.foundBT[j-1]);
+    temp[16] = '\0';
+    LCD_display(temp);
+    delay(750);
+            
     LCD_setupMenu();
 }
 

@@ -44,15 +44,22 @@ int main()
         if(showDataEn == 1)
             LCD_dataShow();
         
-//        uart_print(bleData.packetBuf);
-        int k = 0;
-        while(bleData.foundBT[k][0] != '\0')
-        {
-            uart_print(bleData.foundBT[k]);
-            k++;
-        }
-        uart_print("\r\n");
-        uart_print("\r\n");
+//        if(!bleData.isConnected)
+//        {
+//            int k = 0;
+//            while(bleData.foundBT[k][0] != '\0')
+//            {
+//                uart_print(bleData.foundBT[k++]);
+//                uart_print("\r\n");
+//            }
+//            uart_print("\r\n");
+//        }
+//        else
+//        {
+            uart_print(bleData.packetBuf);
+            uart_print("\r\n");
+            uart_print("\r\n");
+//        }
     }
     int j;
     for(j = 0; j < MAX; j++)

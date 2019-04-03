@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/bluetooth.c</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/uart.h</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/interrupt.c</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/uart.c</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/main.c</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/main.h</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/bluetooth.h</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/initialization.c</file>
-            <file>file:/E:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/lcd.c</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/system.c</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/bluetooth.h</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/main.c</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/initialization.c</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/bluetooth.c</file>
+            <file>file:/C:/Projects/ECE_461/SmartIr_FJ_Home/PICFJ_HOME.X/interrupt.c</file>
         </group>
     </open-files>
 </project-private>
