@@ -6,6 +6,7 @@
 #include "uart.h"
 #include "system.h"
 #include "bluetooth.h"
+#include "initialization.h"
 
 BLE_DATA bleData;
 
@@ -81,60 +82,104 @@ void BLE_parseT1(char str[])
     }
 }
 
-/*void BLE_searchStream(char str[]) 
+bool BLE_searchStr(char key[], char str[])
 {
-    char temp[12] = "";
-    int i = 0, k;
-
-    while (str[i++] != '\0')
+    char temp[strlen(key)];
+    int i = strlen(key) - 1, j, k = 0;
+    
+    while(str[i++] != '\0')
     {
-        k = 0;
-        while((str[k+i] != '\0') && (k < 11))
+        for(j = 0; j < strlen(key); j++)
         {
-            temp[k] = str[k+i];
+            temp[j] = str[j+k];
+        }
+        temp[j] = '\0';
+        if(!strcmp(temp,key))
+            return true;
+        k++;
+    }
+    return false;
+}
+
+void BLE_update(void)
+{
+    bool found = false;
+    if(bleData.packetBuf[bleData.packetIndex-2] == '>' && !bleData.isConnected)
+    {
+        BLE_connect(2);
+    }
+    
+    if(bleData.packetBuf[bleData.packetIndex-2] == '\r' && !bleData.isConnected)
+    {
+        BLE_parseT1(bleData.packetBuf);
+    }
+    
+    if(bleData.streamConn)
+    {
+        if(BLE_parseData(bleData.packetBuf))
+        {
+            memset(bleData.packetBuf,'\0',PACKET_LEN);
+            bleData.packetIndex = 0;
+        }
+    }
+    
+    found = BLE_searchStr("DISCONNECT",bleData.packetBuf);
+    if(found && !bleData.streamConn)
+    {      
+        uart_print("\r\n--DISCONNECT--\r\n");
+        uart2_print("R,1\r");
+        delay(2000);
+    }
+
+    found = BLE_searchStr("STREAM_OPEN",bleData.packetBuf);
+    if(found && !bleData.streamConn)
+    {
+        memset(bleData.packetBuf,'\0',PACKET_LEN);
+        bleData.packetIndex = 0;
+        uart_print("\r\n--STREAM OPEN--\r\n");
+        delay(500);
+        bleData.streamConn = true;
+    }
+    
+    found = BLE_searchStr("REBOOT",bleData.packetBuf);
+    if(found)
+    {
+        InitBluetooth();
+        uart_print("\r\n--REBOOT--\r\n");
+        delay(1000);
+    }
+    
+    bleData.dataReceived = false;
+}
+
+bool BLE_parseData(char str[])
+{
+    int i,j,k,n;
+    int count=0;
+    
+    for(i = 0; bleData.packetBuf[i] != '\0'; i++)
+    {
+        if(bleData.packetBuf[i] == ',')
+            count++;
+    }
+    
+    if(count < 3)
+        return false;
+    
+//    j/k : are the buffer index
+//    i : represents a particular data
+//    n : is the specific data's value index
+    
+    k = 0;
+    for(i = 0; i < 3; i++)
+    {
+        n = 0;
+        for(j = k; bleData.packetBuf[j] != ','; j++)
+        {
+            bleData.data[i][n++] = bleData.packetBuf[j];
             k++;
         }
-        temp[k] = '\0';
-        
-        if(!strcmp(temp,"STREAM_OPEN"))
-        {
-            bleData.streamConn = 1;
-            uart_print("yeyeyeyyeyeyyeyyyeyeyyeyeyeyettttt");
-            bleData.packetIndex = 0;
-            bleData.packetBuf[0] = '\0';
-        }
+        k++;
     }
-}*/
-
-void BLE_searchStream(char str[]) 
-{
-    int i = 0, k;
-    
-    while(str[i] != '\0')
-    {
-//        if(str[i] == 'S')
-//        {
-//            if(str[i+6] != '\0')
-//            {
-//                if(str[i+6] == '_')
-//                {
-//                    HB_LED = 1;
-//                    while(1);
-//                }
-//            }
-//            k = 0;
-//            while(str[i+k] != '\0' && k < 11)
-//            {
-//                temp[k] = str[i+k];
-//                k++;
-//            }
-//            temp[k] = '\0';
-//            if(!strcmp(temp,"STREAM_OPEN"))
-//            {
-//                HB_LED = 1;
-//                while(1);
-//            }
-//        }
-        i++;
-    }
+    return true;
 }

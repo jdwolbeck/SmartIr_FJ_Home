@@ -31,35 +31,51 @@
 int delay_value = 1000; //ms
 int currentMenu = 0;
 bool autoEn = false;
-bool showDataEn = 0;
+bool showDataEn = false;
+bool tryingConn = false;
 
 int main() 
 {
     InitApp();
+    delay(100);
+    uart2_print("R,1\r"); //Used to reboot bluetooth on startup
     
     while(1)
     {
-        delay(1000);
+        delay(250);
         HB_LED = !HB_LED;
-        if(showDataEn == 1)
+        
+        if(bleData.dataReceived)
+            BLE_update();
+        
+        if(showDataEn)
             LCD_dataShow();
         
-//        if(!bleData.isConnected)
-//        {
-//            int k = 0;
-//            while(bleData.foundBT[k][0] != '\0')
-//            {
-//                uart_print(bleData.foundBT[k++]);
-//                uart_print("\r\n");
-//            }
-//            uart_print("\r\n");
-//        }
-//        else
-//        {
-            uart_print(bleData.packetBuf);
+        if(!bleData.isConnected)
+        {
+            if(!tryingConn)
+            {
+                tryingConn = true;
+                BLE_connect(1);
+            }
+            int k = 0;
+            while(bleData.foundBT[k][0] != '\0')
+            {
+                uart_print(bleData.foundBT[k++]);
+                uart_print("\r\n");
+            }
             uart_print("\r\n");
+        }
+        else
+        {
+            int k = 0;
+            while(bleData.data[k][0] != '\0')
+            {
+                uart_print(bleData.data[k++]);
+                uart_print(" ");
+            }
             uart_print("\r\n");
-//        }
+        }
     }
     int j;
     for(j = 0; j < MAX; j++)

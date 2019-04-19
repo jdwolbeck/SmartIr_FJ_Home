@@ -30,13 +30,23 @@ void btnPressed(int btn)
             break;
         case DATA_MENU:
             if(btn == 1) // K1 (Top) was pressed
+            {
                 showDataEn = true;
+            }
             else if(btn == 2) // K2 (Top-MID) was pressed
+            {
                 showDataEn = false;
+                delay(100); //To fix error with overwriting bottom line
+                LCD_dataMenu();
+            }
 //            else if(btn == 3) // K3 (Bot-MID) was pressed
 //                LCD_waterAuto();
             else if(btn == 4) // K4 (Bot) was pressed
+            {
                 showDataEn = false;
+                delay(100); //To fix error with overwriting bottom line
+                LCD_mainMenu();
+            }
             break;
         case WIFI_MENU:
             if(btn == 1) // K1 (Top) was pressed

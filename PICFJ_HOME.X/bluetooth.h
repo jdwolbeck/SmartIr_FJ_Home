@@ -5,24 +5,29 @@
 
 #define MAX 15
 #define NUM_OF_SENSORS 3
+#define DATA_LEN 5
+#define READINGS 3
 #define STR_LEN 500
+#define PACKET_LEN 1024
 
 typedef struct
 {
     bool en;
     int packetIndex;
-    int packetSize;
     int count;
-    char foundBT[MAX][STR_LEN]; // 10 strings of 100 length
+    char foundBT[MAX][STR_LEN];
     char sensors[NUM_OF_SENSORS][STR_LEN];
-    char packetBuf[1024];
-    bool packetEOT;
+    char packetBuf[PACKET_LEN];
+    char data[READINGS][DATA_LEN];
     bool isConnected;
     bool streamConn;
+    bool dataReceived;
 } BLE_DATA;
 
 extern BLE_DATA bleData;
 
 void BLE_connect(int);
 void BLE_parseT1(char[]);
-void BLE_searchStream(char[]);
+bool BLE_searchStr(char[],char[]);
+void BLE_update(void);
+bool BLE_parseData(char[]);

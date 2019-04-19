@@ -23,3 +23,4 @@ void InitGPIO(void);
 void InitUART(void);
 void InitLCD(void);
 void InitKeypad(void);
+void InitBluetooth(void);

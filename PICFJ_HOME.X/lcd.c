@@ -272,21 +272,27 @@ void LCD_waterAuto(void)
 
 void LCD_dataShow(void)
 {
-    LCD_clear();
-    LCD_display("Temp Lux Moistur");
-    LCD_secondLine();
-    while(showDataEn == 1)
+    if(bleData.data[2][0] != '\0')
     {
-        LCD_display("                ");
+        LCD_clear();
+        LCD_display("Soil  Tmp   Lux");
         LCD_secondLine();
-        LCD_display("100.0F 1023 100%");
-        delay(250);
-        LCD_secondLine();
+        LCD_display(bleData.data[0]);
+        LCD_display("  ");
+        LCD_display(bleData.data[1]);
+        LCD_display("  ");
+        LCD_display(bleData.data[2]);
     }
-    if(!showDataEn)
-        LCD_dataMenu();
     else
-        LCD_mainMenu();
+    {
+        LCD_clear();
+        LCD_display("Bluetooth");
+        LCD_secondLine();
+        LCD_display("Disconnected");
+        showDataEn = false;
+        delay(1000);
+        LCD_dataMenu();
+    }
 }
 
 void LCD_wifiShow(void)
@@ -366,7 +372,6 @@ void LCD_infoMenu(void)
 
 void LCD_bleShow(void)
 {
-    char temp[STR_LEN];
     int j = 0, ind = 1;
     char index[3];
     index[0] = ind + '0';
@@ -377,35 +382,35 @@ void LCD_bleShow(void)
     {
         if(!j)
         {
+            index[0] = ind + '0';
             LCD_clear();
-            strcpy(temp,bleData.foundBT[j]);
-            temp[16] = '\0';
             LCD_secondLine();
             LCD_display(index);
-            LCD_display(temp);
-            delay(750);
+            LCD_display(bleData.foundBT[j]);
             j++;
             ind++; //Used for indexing the BT module
+            delay(750);
         }
         else
         {
             LCD_clear();
-            strcpy(temp,bleData.foundBT[j-1]);
-            temp[16] = '\0';
-            LCD_display(temp);
+            index[0] = ind - 1 + '0';
+            LCD_display(index);
+            LCD_display(bleData.foundBT[j-1]);
             LCD_secondLine();
             
-            strcpy(temp,bleData.foundBT[j]);
-            temp[16] = '\0';
-            LCD_display(temp);
-            delay(750);
+            index[0] = ind + '0';
+            LCD_display(index);
+            LCD_display(bleData.foundBT[j]);
             j++;
+            ind++;
+            delay(750);
         }
     }
     LCD_clear();
-    strcpy(temp,bleData.foundBT[j-1]);
-    temp[16] = '\0';
-    LCD_display(temp);
+    index[0] = ind - 1 + '0';
+    LCD_display(index);
+    LCD_display(bleData.foundBT[j-1]);
     delay(750);
             
     LCD_setupMenu();

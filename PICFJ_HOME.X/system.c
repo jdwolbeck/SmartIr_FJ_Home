@@ -9,7 +9,6 @@ void delay(int ms)
     {
         for(j = 284; j > 0; j--);
     }
-    j = 0;
 }
 
 char* charToString(char ch)

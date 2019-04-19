@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "initialization.h"
 #include "lcd.h"
+#include "main.h"
 #include "system.h"
 #include "bluetooth.h"
 
@@ -12,6 +13,7 @@ void InitApp()
     InitUART();
     InitLCD();
     InitKeypad();
+    InitBluetooth();
 }
 
 void InitGPIO()
@@ -54,18 +56,6 @@ void InitUART()
     U1STAbits.UTXEN = 1;    //UART1 TX Enable
     
     //UART 2 (Bluetooth))
-    int i = MAX;
-    for(i = 0; i < MAX; i++)
-    {
-        bleData.foundBT[i][0] = '\0';
-    }
-    bleData.en = true;
-    bleData.packetEOT = false;
-    bleData.isConnected = false;
-    bleData.count = 0;
-    bleData.packetIndex = 0;
-    memset(bleData.packetBuf,'\0',1024);
-    
     U2MODE = 0x0000;
     U2STA = 0x0000;
     
@@ -131,4 +121,29 @@ void InitKeypad()
     IFS1bits.IOCIF = 0; // Interrupt flag
     IPC4bits.IOCIP = 3; // Interrupt priority
     IEC1bits.IOCIE = 1; // Global enable
+}
+
+void InitBluetooth(void)
+{
+    int i;
+    for(i = 0; i < MAX; i++)
+    {
+        memset(bleData.foundBT[i],'\0',STR_LEN);
+    }
+    for(i = 0; i < NUM_OF_SENSORS; i++)
+    {
+        memset(bleData.sensors[i],'\0',STR_LEN);
+    }
+    for(i = 0; i < READINGS; i++)
+    {
+        memset(bleData.data[i],'\0',DATA_LEN);
+    }
+    memset(bleData.packetBuf,'\0',PACKET_LEN);
+    bleData.en = true;
+    bleData.isConnected = false;
+    bleData.dataReceived = false;
+    bleData.streamConn = false;
+    bleData.count = 0;
+    bleData.packetIndex = 0;
+    tryingConn = false;
 }

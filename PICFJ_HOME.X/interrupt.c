@@ -25,33 +25,13 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(void)
 void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
 {
     char RXchar = U2RXREG;
-    if(RXchar == '\0')
-        RXchar = '-';
     
-    bleData.packetBuf[bleData.packetIndex++] = RXchar;
-    bleData.packetBuf[bleData.packetIndex] = '\0';
-    
-    if(RXchar == '>' && !bleData.isConnected)
+    if(RXchar != '\0')
     {
-        BLE_connect(2);
+        bleData.packetBuf[bleData.packetIndex++] = RXchar;
+        bleData.packetBuf[bleData.packetIndex] = '\0';
+        bleData.dataReceived = true;
     }
-    else if(RXchar == '\r' && !bleData.isConnected)
-    {
-        BLE_parseT1(bleData.packetBuf);
-    }
-    else if((RXchar == '%') && bleData.en)
-    {
-        if(bleData.packetBuf[bleData.packetIndex - 2] == 'N')
-        {
-            memset(bleData.packetBuf,'\0',1024);
-            bleData.packetIndex = 0;
-            bleData.en = 0;
-        }
-    }
-//    if(bleData.isConnected && !bleData.streamConn)
-//    {
-//        //BLE_searchStream(bleData.packetBuf);
-//    }
 
     IFS1bits.U2RXIF = 0;
 }
