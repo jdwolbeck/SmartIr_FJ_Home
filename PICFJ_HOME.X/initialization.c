@@ -7,6 +7,14 @@
 #include "system.h"
 #include "bluetooth.h"
 
+//Global Variables
+int delay_value = 1000; //ms
+int currentMenu = 0;
+int btnEn = 0;
+bool autoEn = false;
+bool showDataEn = false;
+bool tryingConn = false;
+
 void InitApp()
 {
     InitGPIO();
@@ -140,9 +148,9 @@ void InitBluetooth(void)
     }
     memset(bleData.packetBuf,'\0',PACKET_LEN);
     bleData.en = true;
-    bleData.isConnected = false;
+    bleData.isPaired = false;
     bleData.dataReceived = false;
-    bleData.streamConn = false;
+    bleData.isConnected = false;
     bleData.count = 0;
     bleData.packetIndex = 0;
     tryingConn = false;

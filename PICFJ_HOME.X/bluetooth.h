@@ -19,15 +19,15 @@ typedef struct
     char sensors[NUM_OF_SENSORS][STR_LEN];
     char packetBuf[PACKET_LEN];
     char data[READINGS][DATA_LEN];
+    bool isPaired;
     bool isConnected;
-    bool streamConn;
     bool dataReceived;
 } BLE_DATA;
 
 extern BLE_DATA bleData;
 
 void BLE_connect(int);
-void BLE_parseT1(char[]);
+void BLE_findMAC(char[]);
 bool BLE_searchStr(char[],char[]);
 void BLE_update(void);
 bool BLE_parseData(char[]);

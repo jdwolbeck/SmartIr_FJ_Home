@@ -28,29 +28,30 @@
 #include "initialization.h"
 #include "configuration_bits.h"
 
-int delay_value = 1000; //ms
-int currentMenu = 0;
-bool autoEn = false;
-bool showDataEn = false;
-bool tryingConn = false;
-
 int main() 
 {
+    //Used to ensure program doesn't infinitely loop unconnected to Bluetooth
+    int antiStuck = 0;    
     InitApp();
-    delay(100);
-    uart2_print("R,1\r"); //Used to reboot bluetooth on startup
     
     while(1)
     {
         delay(250);
         HB_LED = !HB_LED;
         
+        //Keypad(software) sets this: shows realtime data
+        if(showDataEn && bleData.dataReceived)
+            LCD_dataShow();
+        
+        //UART2(Bluetooth) Interrupt sets this: when char receive
         if(bleData.dataReceived)
             BLE_update();
         
-        if(showDataEn)
-            LCD_dataShow();
+        //Keypad(hardware) set this: handles button logic
+        if(btnEn)
+            btnPressed(btnEn);
         
+        //If stream !open: print out found addresses
         if(!bleData.isConnected)
         {
             if(!tryingConn)
@@ -65,21 +66,30 @@ int main()
                 uart_print("\r\n");
             }
             uart_print("\r\n");
-        }
+        }//if stream open: print out most recent data
         else
         {
-            int k = 0;
-            while(bleData.data[k][0] != '\0')
+            int k;
+            for(k = 0; (k < 3) && (bleData.data[k][0] != '\0'); k++)
             {
-                uart_print(bleData.data[k++]);
+                uart_print(bleData.data[k]);
                 uart_print(" ");
             }
             uart_print("\r\n");
         }
+        
+        //Only used when stream !open and no data is being received
+        //After about 20 seconds will reboot bluetooth in hopes to 
+        //get out of situations where program is stuck. Used for robustness
+        antiStuck++;
+        if(antiStuck > 4*20 && !bleData.isConnected) //About 20 seconds
+        {
+            antiStuck = 0;
+            uart2_print("R,1\r");
+        }
+        if(antiStuck > 100000)
+            antiStuck = 0;
     }
-    int j;
-    for(j = 0; j < MAX; j++)
-        free(bleData.foundBT[j]);
-    
+
     return 0;
 }

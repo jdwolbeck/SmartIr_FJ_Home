@@ -66,6 +66,18 @@ void LCD_home(void)
     delay(5);
 }
 
+bool LCD_moveCursor(int row, int col)
+{
+    if((row > 1 || row < 0) || (col > 15 || col < 0))
+        return false;
+
+    //8-bit address
+    LCD_write(0,1,row,0,0);
+    LCD_write(0,col&0x8,col&0x4,col&0x2,col&0x1);
+    delay(5);
+    return true;
+}
+
 void LCD_firstLine(void)
 {
     //LCD_write(0,1,0,0,0,0,0,0,0);
@@ -201,7 +213,7 @@ void LCD_moreMenu(void)
 {
     currentMenu = MORE_MENU;
     LCD_clear();
-    LCD_display("1.Setup   2.N/A");
+    LCD_display("1.View    2.N/A");
     LCD_secondLine();
     LCD_display("3.Info    4.Back");
 }
@@ -213,15 +225,6 @@ void LCD_wifiConnectMenu(void)
     LCD_display("1.Net1    2.Net2");
     LCD_secondLine();
     LCD_display("3.Net3    4.Back");
-}
-
-void LCD_setupMenu(void)
-{
-    currentMenu = SETUP_MENU;
-    LCD_clear();
-    LCD_display("1.View 2.Connect");
-    LCD_secondLine();
-    LCD_display("3.N/A    4.Back");
 }
 //////////////////////////////////////////////////////////////
 /*                  Extra Functions                         */
@@ -274,14 +277,18 @@ void LCD_dataShow(void)
 {
     if(bleData.data[2][0] != '\0')
     {
+        char temp[2];
+        temp[0] = 0xDF; temp[1] = '\0';
         LCD_clear();
-        LCD_display("Soil  Tmp   Lux");
+        LCD_display("Soil  Lux   Temp");
         LCD_secondLine();
         LCD_display(bleData.data[0]);
-        LCD_display("  ");
+        LCD_moveCursor(1, 6);
         LCD_display(bleData.data[1]);
-        LCD_display("  ");
+        LCD_moveCursor(1, 11);
         LCD_display(bleData.data[2]);
+        LCD_display(temp);
+        LCD_display("F");
     }
     else
     {
@@ -413,16 +420,5 @@ void LCD_bleShow(void)
     LCD_display(bleData.foundBT[j-1]);
     delay(750);
             
-    LCD_setupMenu();
-}
-
-void LCD_bleConnect(void)
-{
-    LCD_clear();
-    LCD_display("Connecting in");
-    LCD_secondLine();
-    LCD_display("1");
-    delay(1000);
-    LCD_setupMenu();
-    BLE_connect(1);
+    LCD_moreMenu();
 }

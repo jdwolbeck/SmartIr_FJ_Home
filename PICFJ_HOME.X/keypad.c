@@ -36,7 +36,7 @@ void btnPressed(int btn)
             else if(btn == 2) // K2 (Top-MID) was pressed
             {
                 showDataEn = false;
-                delay(100); //To fix error with overwriting bottom line
+                //delay(100); //To fix error with overwriting bottom line
                 LCD_dataMenu();
             }
 //            else if(btn == 3) // K3 (Bot-MID) was pressed
@@ -44,7 +44,7 @@ void btnPressed(int btn)
             else if(btn == 4) // K4 (Bot) was pressed
             {
                 showDataEn = false;
-                delay(100); //To fix error with overwriting bottom line
+                //delay(100); //To fix error with overwriting bottom line
                 LCD_mainMenu();
             }
             break;
@@ -60,7 +60,7 @@ void btnPressed(int btn)
             break;
         case MORE_MENU:
             if(btn == 1) // K1 (Top) was pressed
-                LCD_setupMenu();
+                LCD_bleShow();
 //            else if(btn == 2) // K2 (Top-MID) was pressed
 //                LCD_waterOff();
             if(btn == 3) // K3 (Bot-MID) was pressed
@@ -78,17 +78,9 @@ void btnPressed(int btn)
             else if(btn == 4) // K4 (Bot) was pressed
                 LCD_wifiMenu();
             break;
-        case SETUP_MENU:
-            if(btn == 1) // K1 (Top) was pressed
-                LCD_bleShow();
-            else if(btn == 2) // K2 (Top-MID) was pressed
-                LCD_bleConnect();
-//            if(btn == 3) // K3 (Bot-MID) was pressed
-//                LCD_wifiSelect(3);
-            else if(btn == 4) // K4 (Bot) was pressed
-                LCD_moreMenu();
-            break;
         default:
             break;
     }
+    
+    btnEn = 0;
 }

@@ -9,6 +9,7 @@
 //extern GLOBAL global;
 extern int delay_value;
 extern int currentMenu;
+extern int btnEn;
 extern bool autoEn;
-extern int showDataEn;
+extern bool showDataEn;
 extern bool tryingConn;

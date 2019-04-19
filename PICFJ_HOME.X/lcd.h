@@ -7,7 +7,6 @@
 #define WIFI_MENU 3
 #define MORE_MENU 4
 #define WIFI_CONN_MENU 5
-#define SETUP_MENU 6
 
 #define RS LATBbits.LATB15
 #define RW LATBbits.LATB5
@@ -20,6 +19,7 @@
 void LCD_begin(void);
 void LCD_clear(void);
 void LCD_home(void);
+bool LCD_moveCursor(int, int);
 void LCD_firstLine(void);
 void LCD_secondLine(void);
 void LCD_blink(bool);
@@ -33,7 +33,6 @@ void LCD_dataMenu(void);
 void LCD_wifiMenu(void);
 void LCD_moreMenu(void);
 void LCD_wifiConnectMenu(void);
-void LCD_setupMenu(void);
 
 void LCD_waterOn(void);
 void LCD_waterOff(void);
@@ -44,4 +43,3 @@ void LCD_wifiShow(void);
 void LCD_wifiIsConnected(void);
 void LCD_infoMenu(void);
 void LCD_bleShow(void);
-void LCD_bleConnect(void);

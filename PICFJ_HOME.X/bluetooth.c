@@ -12,6 +12,10 @@ BLE_DATA bleData;
 
 void BLE_connect(int count)
 {
+    //This function is used to actually connect to the RN4871
+    //(Bluetooth Module). Count is used form rest of program
+    //to control what commands are being sent.
+    
     if(count == 1)
     {
         uart2_print("$");
@@ -24,13 +28,18 @@ void BLE_connect(int count)
     }
     else if(count == 3)
     {
-        bleData.isConnected = true;
+        bleData.isPaired = true;
         uart2_print("C,0,801F12B58D2F\r"); //Connect to module
     }
 }
 
-void BLE_parseT1(char str[])
+void BLE_findMAC(char str[])
 {
+    //This function parses the packetBuf and looks for different MAC addresses.
+    //It will compare found MAC addresses with our known node's MAC addresses.
+    //After the desired address is found it is saved in bleData.foundBT[0-MAX]
+    //Also initiates the final phase of Bluetooth connection process.
+    
     int i = 0, j = 0, k, l;
     char temp[100];
     char temp2[100];
@@ -84,6 +93,9 @@ void BLE_parseT1(char str[])
 
 bool BLE_searchStr(char key[], char str[])
 {
+    //This function will parse an input string (str) and
+    //find the keyword within it. Returns true if found.
+    
     char temp[strlen(key)];
     int i = strlen(key) - 1, j, k = 0;
     
@@ -103,18 +115,23 @@ bool BLE_searchStr(char key[], char str[])
 
 void BLE_update(void)
 {
-    bool found = false;
-    if(bleData.packetBuf[bleData.packetIndex-2] == '>' && !bleData.isConnected)
+    //This function is called with every program loop (about 250 ms).
+    //The purpose is to take away the responsibility from the interrupt
+    //to update the necessary functions when data is received from
+    //the Bluetooth (UART 2).
+    
+    bool found = BLE_searchStr("CMD>", bleData.packetBuf);
+    if(found && !bleData.isPaired)
     {
         BLE_connect(2);
     }
     
-    if(bleData.packetBuf[bleData.packetIndex-2] == '\r' && !bleData.isConnected)
+    if(!bleData.isPaired)
     {
-        BLE_parseT1(bleData.packetBuf);
+        BLE_findMAC(bleData.packetBuf);
     }
     
-    if(bleData.streamConn)
+    if(bleData.isConnected)
     {
         if(BLE_parseData(bleData.packetBuf))
         {
@@ -124,21 +141,20 @@ void BLE_update(void)
     }
     
     found = BLE_searchStr("DISCONNECT",bleData.packetBuf);
-    if(found && !bleData.streamConn)
+    if(found && !bleData.isConnected)
     {      
         uart_print("\r\n--DISCONNECT--\r\n");
         uart2_print("R,1\r");
-        delay(2000);
     }
 
     found = BLE_searchStr("STREAM_OPEN",bleData.packetBuf);
-    if(found && !bleData.streamConn)
+    if(found && !bleData.isConnected)
     {
         memset(bleData.packetBuf,'\0',PACKET_LEN);
         bleData.packetIndex = 0;
         uart_print("\r\n--STREAM OPEN--\r\n");
-        delay(500);
-        bleData.streamConn = true;
+        bleData.isConnected = true;
+        bleData.isPaired = true;
     }
     
     found = BLE_searchStr("REBOOT",bleData.packetBuf);
@@ -154,6 +170,12 @@ void BLE_update(void)
 
 bool BLE_parseData(char str[])
 {
+    //This function is used after bluetooth connection is
+    //established. This is used to determine when all three
+    //data points have been received. Then takes these values
+    //and puts them into their respective buffer. 
+    //bleData.data[0-2] holds soil, lux, temp data.
+    
     int i,j,k,n;
     int count=0;
     

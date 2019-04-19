@@ -28,6 +28,8 @@ void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
     
     if(RXchar != '\0')
     {
+        if(bleData.packetIndex == (PACKET_LEN - 1))
+            bleData.packetIndex = 0;
         bleData.packetBuf[bleData.packetIndex++] = RXchar;
         bleData.packetBuf[bleData.packetIndex] = '\0';
         bleData.dataReceived = true;
@@ -39,13 +41,13 @@ void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(void)
 void __attribute__((interrupt, no_auto_psv)) _IOCInterrupt(void)
 {
     if(IOCFBbits.IOCFB13) // K1 (Top) was pressed
-        btnPressed(1);
+        btnEn = 1;
     else if(IOCFBbits.IOCFB12) // K2 (Top-MID) was pressed
-        btnPressed(2);
+        btnEn = 2;
     else if(IOCFBbits.IOCFB11) // K3 (Bot-MID) was pressed
-        btnPressed(3);
+        btnEn = 3;
     else if(IOCFBbits.IOCFB10) // K4 (Bot) was pressed
-        btnPressed(4);
+        btnEn = 4;
     
     IOCFB = 0; // Clear individual flags
     IFS1bits.IOCIF = 0; // Interrupt flag
