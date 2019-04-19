@@ -30,8 +30,8 @@
 
 int delay_value = 1000; //ms
 int currentMenu = 0;
-int autoEn = false;
-int showDataEn = 0;
+bool autoEn = false;
+bool showDataEn = 0;
 
 int main() 
 {

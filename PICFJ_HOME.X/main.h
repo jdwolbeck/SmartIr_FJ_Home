@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #define HB_LED LATAbits.LATA4
 
 //typedef enum
@@ -8,5 +9,5 @@
 //extern GLOBAL global;
 extern int delay_value;
 extern int currentMenu;
-extern int autoEn;
-extern int showDataEn;
+extern bool autoEn;
+extern bool showDataEn;
